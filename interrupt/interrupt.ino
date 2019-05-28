@@ -38,10 +38,11 @@ void setup(){
     keypad.addEventListener(keypadEvent); // Add an event listener for this keypad
 
     LCDSetup();
-    defaultLCD();
+    
 }
 
 void loop(){
+    defaultLCD();
     char key = keypad.getKey();
 
     if (key) {
@@ -60,6 +61,7 @@ void loop(){
 void keypadEvent(KeypadEvent key){
     switch (keypad.getState()){
     case PRESSED:
+        clearLCD();
         if (key == '#') {
             successLCD();
         }
