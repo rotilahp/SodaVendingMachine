@@ -10,6 +10,7 @@
  || #
  */
 #include <Keypad.h>
+#include "lcd.h"
 
 const byte ROWS = 4; //four rows
 const byte COLS = 4; //three columns
@@ -35,6 +36,9 @@ void setup(){
     digitalWrite(ledPin, HIGH);           // Turn the LED on.
     ledPin_state = digitalRead(ledPin);   // Store initial LED state. HIGH when LED is on.
     keypad.addEventListener(keypadEvent); // Add an event listener for this keypad
+
+    LCDSetup();
+    defaultLCD();
 }
 
 void loop(){
@@ -43,6 +47,9 @@ void loop(){
     if (key) {
         Serial.println(key);
     }
+   /* else {
+      defaultLCD();
+    }*/
     if (blink){
         digitalWrite(ledPin,!digitalRead(ledPin));    // Change the ledPin from Hi2Lo or Lo2Hi.
         delay(100);
@@ -54,8 +61,10 @@ void keypadEvent(KeypadEvent key){
     switch (keypad.getState()){
     case PRESSED:
         if (key == '#') {
-            digitalWrite(ledPin,!digitalRead(ledPin));
-            ledPin_state = digitalRead(ledPin);        // Remember LED state, lit or unlit.
+            successLCD();
+        }
+        else {
+          updateLCD(key);
         }
         break;
 

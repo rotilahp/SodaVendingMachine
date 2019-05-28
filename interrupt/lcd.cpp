@@ -43,7 +43,7 @@ void updateLCD(char x){
   lcd.print(mystring);
 }
 
-void defaultLCDDisplay(){
+void defaultLCD(){
 
   String defaultMessage1 = "Daniel's Soda Machine!";
   String defaultMessage2 = "Get yourself a soda today!";
