@@ -3,6 +3,7 @@
 *********/
 
 #include <LiquidCrystal_I2C.h>
+#include <Arduino.h>
 
 // set the LCD number of columns and rows
 int lcdColumns =16;
@@ -17,6 +18,18 @@ void LCDSetup(){
   lcd.init();
   // turn on LCD backlight                      
   lcd.backlight();
+}
+
+void scrollText(int row, String message, int delayTime, int lcdColumns) {
+  for (int i=0; i < lcdColumns; i++) {
+    message = " " + message;  
+  } 
+  message = message + " "; 
+  for (int pos = 0; pos < message.length(); pos++) {
+    lcd.setCursor(0, row);
+    lcd.print(message.substring(pos, pos + lcdColumns));
+    delay(delayTime);
+  }
 }
 
 void updateLCD(char x){
@@ -40,17 +53,7 @@ void defaultLCDDisplay(){
   
 }
 
-void scrollText(int row, String message, int delayTime, int lcdColumns) {
-  for (int i=0; i < lcdColumns; i++) {
-    message = " " + message;  
-  } 
-  message = message + " "; 
-  for (int pos = 0; pos < message.length(); pos++) {
-    lcd.setCursor(0, row);
-    lcd.print(message.substring(pos, pos + lcdColumns));
-    delay(delayTime);
-  }
-}
+
 
 void clearLCD(){
   lcd.clear();
