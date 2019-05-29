@@ -1,3 +1,5 @@
 extern void servoSetup();
 
-extern void openGate(int x);
+extern void openGateA();
+
+extern void openGateB();
