@@ -1,3 +1,3 @@
 extern void stepperSetup();
 
-extern void sodaDelivery(int x);
+extern void sodaDelivery();

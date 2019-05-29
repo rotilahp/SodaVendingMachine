@@ -2,15 +2,15 @@
 #include <Arduino.h>
 
 //Pin Config
-#define stepPin 4
-#define directionPin 16
+#define stepPin 11
+#define directionPin 10
 
 void stepperSetup() {
   pinMode (stepPin, OUTPUT);
   pinMode (directionPin, OUTPUT);
 }
 
-void sodaDelivery(int x) {
+void sodaDelivery() {
   //forward direction 
   digitalWrite(directionPin, HIGH);
   //200 steps for one full cycle rotation

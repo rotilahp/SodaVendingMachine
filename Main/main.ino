@@ -33,6 +33,7 @@ boolean blink = false;
 boolean ledPin_state;
 
 long keypadTimer;
+char previousKey;
 
 void setup(){
     Serial.begin(115200);
@@ -44,6 +45,7 @@ void setup(){
     LCDSetup();
     defaultLCD();
     servoSetup();
+    stepperSetup();
 }
 
 void loop(){
@@ -53,14 +55,10 @@ void loop(){
         Serial.println(key);
         keypadTimer = millis();
     }
-    
-    if (blink){
-        digitalWrite(ledPin,!digitalRead(ledPin));    // Change the ledPin from Hi2Lo or Lo2Hi.
-        delay(100);
-    }
 
     //if keypad hasnt been pressed for 4 seconds, put default message back on
     if (millis() - keypadTimer > 4000){
+        previousKey = '0';
         defaultLCD();
     }
 }
@@ -70,13 +68,20 @@ void keypadEvent(KeypadEvent key){
     switch (keypad.getState()){
     case PRESSED:
         clearLCD();
-        if (key == '#') {
+        if(key == '#' && previousKey == '1'){
             successLCD();
             openGateA();
+            sodaDelivery();
+        }
+        else if(key == '#' && previousKey == '2'){
+            successLCD();
+            openGateB();
+            sodaDelivery();
         }
         else {
           updateLCD(key);
         }
+        previousKey = key;
         break;
 
     case RELEASED:
