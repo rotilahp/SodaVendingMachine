@@ -2,46 +2,100 @@
 #include <Servo.h>
 #include "lcd.h"
 
-//Pins Config
+/*****************************
+ * Written by Daniel Payne
+ * 6/2/2019
+ * Servos without using delays
+ ***********************************/
+
+#include <Servo.h>
+
+Servo myservo;  // create servo object to control a servo
+Servo myservo2;
+
 int ServoPinA =44;
 int ServoPinB =46;
 
-int pos = 0;
+int servoInterval = 15; //15ms interval
+int servoTimer = servoInterval*90; //90 degrees of rotation
+long previousServoMillis;
 
-Servo myservo;
-Servo myservo2;
-
-void servoSetup() {
-    myservo.attach(ServoPinA);   //attaches pin for servo a
-    myservo2.attach(ServoPinB);
-}
+boolean servoStateA = false;
+boolean servoStateB = false;
+boolean reverse = false;
+int pos = 0;    // variable to store the servo position
 
 void openGateA(){
-        
-       for (pos = 0; pos <= 90; pos+=1){
-           Serial.print("Hello :o");
-           myservo.write(pos);              // tell servo to go to position in variable 'pos'
-           delay(15);   
-        }
-      //reverse servo movement
-      //servo goes from 90 degree position to 0 
-      for (pos = 90; pos >=0 ; pos-=1){
-          myservo.write(pos);              
-          delay(15);   
-        }  
-    }
-    
+    servoStateA = true;
+}
 
-void openGateB(){       
-      for (pos = 0; pos <= 90; pos+=1){
-          myservo2.write(pos);              // tell servo to go to position in variable 'pos'
-          delay(15);   
-      }
-      //reverse servo movement
-      //servo goes from 90 degree position to 0 
-      for (pos = 90; pos >= 0; pos-=1){
-          myservo2.write(pos);              
-          delay(15);   
-      }   
+void openGateB(){
+    servoStateB = true;
+}
+void updateServoA(){
+    if (servoStateA == true) {
+        unsigned long currentMillis = millis();
+        //forward movement
+        if (reverse != true){
+            if (currentMillis- previousServoMillis >= servoInterval) {
+                previousServoMillis = currentMillis;
+                myservo.write(pos);
+                pos++;
+            }
+            if (pos >= 90){
+                reverse = true;
+            }
         
-    } 
+        }
+        else {
+            if (currentMillis- previousServoMillis >= servoInterval) {
+                previousServoMillis = currentMillis;
+                pos--;
+                myservo.write(pos);
+            }
+            if (pos <= 0){
+                reverse = false;
+                servoStateA = false;
+            }
+        }
+    }
+}
+void updateServoB(){
+    if (servoStateB == true) {
+        unsigned long currentMillis = millis();
+        //forward movement
+        if (reverse != true){
+            if (currentMillis- previousServoMillis >= servoInterval) {
+                previousServoMillis = currentMillis;
+                myservo2.write(pos);
+                pos++;
+            }
+            if (pos >= 90){
+                reverse = true;
+            }
+        
+        }
+        else {
+            if (currentMillis- previousServoMillis >= servoInterval) {
+                previousServoMillis = currentMillis;
+                pos--;
+                myservo2.write(pos);
+            }
+            if (pos <= 0){
+                reverse = false;
+                servoStateB = false;
+            }
+        }
+    }
+}
+
+void updateServos(){
+    updateServoA();
+    updateServoB();
+}
+
+void servoSetup() {
+  myservo.attach(ServoPinA);  // attaches the servo on pin 13 to the servo object
+  myservo2.attach(ServoPinB);  // attaches the servo on pin 13 to the servo object
+  previousServoMillis = millis();
+}

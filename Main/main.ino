@@ -1,13 +1,11 @@
 
 
-/* @file EventSerialKeypad.pde
- || @version 1.0
- || @author Alexander Brevig
- || @contact alexanderbrevig@gmail.com
- ||
- || @description
- || | Demonstrates using the KeypadEvent.
- || #
+/* Soda Vending Machine by Daniel Payne
+ *  
+ *  danielgatesf@gmail.com
+ *  
+ *  EventSerialKeypad by Alexander Brevig was used to get this started
+ *   
  */
 #include <Keypad.h>
 #include "lcd.h"
@@ -33,6 +31,7 @@ boolean blink = false;
 boolean ledPin_state;
 
 long keypadTimer;
+long currentMillis;
 char previousKey;
 
 void setup(){
@@ -49,18 +48,22 @@ void setup(){
 }
 
 void loop(){
+    currentMillis = millis();
+    
     char key = keypad.getKey();
 
     if (key) {
         Serial.println(key);
-        keypadTimer = millis();
+        keypadTimer = currentMillis;
     }
 
     //if keypad hasnt been pressed for 4 seconds, put default message back on
-    if (millis() - keypadTimer > 4000){
+    if (currentMillis - keypadTimer > 4000){
         previousKey = '0';
         defaultLCD();
     }
+
+    updateServos();
 }
 
 // Taking care of some special events.
@@ -71,14 +74,14 @@ void keypadEvent(KeypadEvent key){
         if(key == '#' && previousKey == '1'){
             successLCD();
             openGateA();
-            sodaDelivery();
+           // sodaDelivery();
             clearLCD();
             defaultLCD();
         }
         else if(key == '#' && previousKey == '2'){
             successLCD();
             openGateB();
-            sodaDelivery();
+          //  sodaDelivery();
             clearLCD();
             defaultLCD();
         }

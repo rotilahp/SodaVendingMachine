@@ -41,7 +41,6 @@ void updateLCD(char x){
 }
 
 void defaultLCD(){
-
   String defaultMessage1 = " Daniel's Soda Vending Machine!";
   String defaultMessage2 = "";
 
