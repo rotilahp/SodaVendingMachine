@@ -70,23 +70,18 @@ void clearLCD(){
 }
 
 void successLCD(){
-  
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Thank you for");
   lcd.setCursor(1,1);
   lcd.print("your purchase!");
-  delay(3000);
-  lcd.clear();
-  defaultLCD();
-
 }
 
 void tryAgainLCD(){
-
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Try again");
   delay(1000);
   lcd.clear();
+  defaultLCD();
 }

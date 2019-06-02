@@ -72,11 +72,18 @@ void keypadEvent(KeypadEvent key){
             successLCD();
             openGateA();
             sodaDelivery();
+            clearLCD();
+            defaultLCD();
         }
         else if(key == '#' && previousKey == '2'){
             successLCD();
             openGateB();
             sodaDelivery();
+            clearLCD();
+            defaultLCD();
+        }
+        else if (key == '#' && (previousKey != '1' || previousKey != '2')){
+            tryAgainLCD();
         }
         else {
           updateLCD(key);
